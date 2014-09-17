@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var fs = require('fs');
+var argv = require('minimist')(process.argv.slice(2));
+var stdin = require('get-stdin');
+var cave = require('..');
+
+if (argv.css) {
+  go(read(argv.css));
+} else {
+  stdin(go);
+}
+
+function read (file) {
+  return fs.readFileSync(file, { encoding: 'utf8' });
+}
+
+function go (data) {
+  argv.css = data;
+  cave(argv._[0], argv, done);
+}
+
+function done (err, data) {
+  if (err) {
+    throw new Error(err.message);
+  }
+  console.log(data);
+  process.exit();
+}
