@@ -2,6 +2,8 @@
 
 > Remove critical CSS from your stylesheet after inlining it in your pages
 
+If you don't understand the purpose of this module, refer to [penthouse][1]
+
 ## Install
 
 ```shell
@@ -24,11 +26,13 @@ Cave will produce an AST and remove any matching rules, then the `done` callback
 
 ## CLI
 
+Cave works well with standard input.
+
 ```shell
 cat path/to/file | cave <stylesheet> > slim.css
 ```
 
-You can also pass in the critical CSS file as an option
+You can also pass in the critical CSS file as an option.
 
 ```shell
 cave --css path/to/file <stylesheet> > slim.css
@@ -37,3 +41,5 @@ cave --css path/to/file <stylesheet> > slim.css
 ## License
 
 MIT
+
+[1]: https://github.com/pocketjoso/penthouse
