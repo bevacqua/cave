@@ -13,7 +13,7 @@ function api (stylesheet, options, done) {
 
   function cleanup () {
     removables.stylesheet.rules.forEach(matchRule);
-    _.forEachRight(removables.stylesheet.rules, removeEmptyMedia);
+    _.forEachRight(sheet.stylesheet.rules, removeEmptyMedia);
   }
 
   function matchRule (rule) {
@@ -56,7 +56,7 @@ function api (stylesheet, options, done) {
 
   function removeEmptyMedia (node, i) {
     if (node.type === 'media' && node.rules.length === 0) {
-      removables.stylesheet.rules.splice(i, 1);
+      sheet.stylesheet.rules.splice(i, 1);
     }
   }
 
