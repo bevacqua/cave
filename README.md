@@ -1,6 +1,6 @@
 # cave
 
-> Take critical css and remove it from your stylesheet
+> Remove critical CSS from your stylesheet after inlining it in your pages
 
 ## Install
 

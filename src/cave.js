@@ -7,7 +7,6 @@ var css = require('css');
 function api (stylesheet, options, done) {
   var sheet = css.parse(read(stylesheet));
   var removables = css.parse(options.css);
-  var count = 0;
 
   cleanup();
   done(null, result());
@@ -50,9 +49,7 @@ function api (stylesheet, options, done) {
     }
 
     function remove (from) {
-      var removals = _.remove(from, rquery).length;
-      count += removals;
-      return removals;
+      _.remove(from, rquery).length;
     }
   }
 
