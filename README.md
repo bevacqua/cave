@@ -2,7 +2,7 @@
 
 > Remove critical CSS from your stylesheet after inlining it in your pages
 
-If you don't understand the purpose of this module, refer to [penthouse][1]
+If you don't understand the purpose of this module, refer to [penthouse][1] which extracts critical CSS from a file, but doesn't remove it. Using this tool you can take the styles produced by an extraction tool like [penthouse][1] and actually remove them from your stylesheet.
 
 ## Install
 
