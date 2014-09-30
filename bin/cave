@@ -6,11 +6,13 @@ var fs = require('fs');
 var argv = require('minimist')(process.argv.slice(2));
 var stdin = require('get-stdin');
 var cave = require('..');
+var ok;
 
 if (argv.css) {
   go(read(argv.css));
 } else {
   stdin(go);
+  setTimeout(die, 100);
 }
 
 function read (file) {
@@ -18,8 +20,22 @@ function read (file) {
 }
 
 function go (data) {
+  ok = true;
   argv.css = data;
   cave(argv._[0], argv, done);
+}
+
+function die () {
+  if (ok) {
+    return;
+  }
+  console.log([
+    'usage:',
+    '  cave <total> --css <to-remove>',
+    'result:',
+    '  <diff>'
+  ].join('\n'));
+  process.exit();
 }
 
 function done (err, data) {

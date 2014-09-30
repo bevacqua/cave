@@ -6,63 +6,81 @@ var css = require('css');
 
 function api (stylesheet, options, done) {
   var sheet = css.parse(read(stylesheet));
+  var sheetRules = sheet.stylesheet.rules;
   var removables = css.parse(options.css);
 
-  cleanup();
+  diff();
   done(null, result());
 
-  function cleanup () {
-    removables.stylesheet.rules.forEach(matchRule);
-    _.forEachRight(sheet.stylesheet.rules, removeEmptyMedia);
+  function diff () {
+    removables.stylesheet.rules.forEach(inspectRule);
+    _.forEachRight(sheetRules, removeEmptyMedia);
   }
 
-  function matchRule (rule) {
-    match(rule);
-  }
-
-  function match (node, parent) {
-    var rquery, mquery;
-    if (node.type === 'rule') {
-      rquery = {
-        type: 'rule',
-        selectors: node.selectors,
-        declarations: node.declarations.map(omitPosition)
-      };
+  function inspectRule (inspected, parent) {
+    var simpler = omitRulePosition(inspected);
+    var forEachVictim = typeof parent === 'number';
+    if (forEachVictim) {
+      parent = false;
+    }
+    if (inspected.type === 'rule') {
       if (parent) {
-        mquery = {
-          type: 'media',
-          media: parent.media
-        };
-        _(sheet.stylesheet.rules).where(mquery).pluck('rules').value().forEach(remove);
+        _(sheetRules)
+          .where({ type: 'media', media: parent.media })
+          .pluck('rules')
+          .value()
+          .forEach(removeMatches);
       } else {
-        remove(sheet.stylesheet.rules);
+        removeMatches(sheetRules);
       }
-    } else if (node.type === 'media') {
-      node.rules.forEach(matchMedia);
+    } else if (inspected.type === 'media') {
+      inspected.rules.forEach(inspectRuleInMedia);
     }
 
-    function omitPosition (declaration) {
-      return _.omit(declaration, 'position');
+    function inspectRuleInMedia (rule) {
+      inspectRule(rule, inspected);
     }
 
-    function matchMedia (rule) {
-      match(rule, node);
+    function removeMatches (rules) {
+      _.remove(rules, perfectMatch).length; // remove perfect matches
+      _.filter(rules, byDeclarations).forEach(stripSelector); // strip selector from partial matches
     }
 
-    function remove (from) {
-      _.remove(from, rquery).length;
+    function perfectMatch (rule) {
+      return _.isEqual(omitRulePosition(rule), simpler);
+    }
+
+    function byDeclarations (rule) {
+      return _.isEqual(omitRulePosition(rule).declarations, simpler.declarations);
+    }
+
+    function stripSelector (rule) {
+      rule.selectors = _.difference(rule.selectors, inspected.selectors);
     }
   }
 
-  function removeEmptyMedia (node, i) {
-    if (node.type === 'media' && node.rules.length === 0) {
-      sheet.stylesheet.rules.splice(i, 1);
+  function removeEmptyMedia (rule, i) {
+    if (rule.type === 'media' && rule.rules.length === 0) {
+      sheetRules.splice(i, 1);
     }
   }
 
   function result () {
-    return css.stringify(sheet);
+    return css.stringify(sheet) + '\n';
   }
+}
+
+function omitPosition (declaration) {
+  return _.omit(declaration, 'position');
+}
+
+function omitRulePosition (rule) {
+  if (rule.type !== 'rule') {
+    return false;
+  }
+  var result = omitPosition(rule);
+  result.declarations = result.declarations.map(omitPosition);
+  return result;
 }
 
 function read (file) {

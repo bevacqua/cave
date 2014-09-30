@@ -38,6 +38,14 @@ You can also pass in the critical CSS file as an option.
 cave --css path/to/file <stylesheet> > slim.css
 ```
 
+## Tests
+
+Run tests using `npm`.
+
+```shell
+npm test
+```
+
 ## License
 
 MIT
