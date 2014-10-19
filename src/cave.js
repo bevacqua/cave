@@ -4,18 +4,15 @@ var _ = require('lodash');
 var fs = require('fs');
 var css = require('css');
 
-function api (stylesheet, options, done) {
+function api (stylesheet, options) {
   var sheet = css.parse(read(stylesheet));
   var sheetRules = sheet.stylesheet.rules;
   var removables = css.parse(options.css);
 
-  diff();
-  done(null, result());
+  removables.stylesheet.rules.forEach(inspectRule);
+  _.forEachRight(sheetRules, removeEmptyMedia);
 
-  function diff () {
-    removables.stylesheet.rules.forEach(inspectRule);
-    _.forEachRight(sheetRules, removeEmptyMedia);
-  }
+  return result();
 
   function inspectRule (inspected, parent) {
     var simpler = omitRulePosition(inspected);

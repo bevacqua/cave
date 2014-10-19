@@ -22,7 +22,9 @@ function read (file) {
 function go (data) {
   ok = true;
   argv.css = data;
-  cave(argv._[0], argv, done);
+  var diff = cave(argv._[0], argv);
+  console.log(diff);
+  process.exit();
 }
 
 function die () {
@@ -35,13 +37,5 @@ function die () {
     'result:',
     '  <diff>'
   ].join('\n'));
-  process.exit();
-}
-
-function done (err, data) {
-  if (err) {
-    throw new Error(err.message);
-  }
-  console.log(data);
   process.exit();
 }

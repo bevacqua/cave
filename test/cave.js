@@ -28,13 +28,9 @@ function read (file) {
 
 function assert (fixture, key) {
   test('test case fixture: ' + key, function (t) {
-    cave(fixture.all, { css: read(fixture.critical) }, caved);
-    t.plan(2);
+    var diff = cave(fixture.all, { css: read(fixture.critical) });
 
-    function caved (err, diff) {
-      t.equal(err, null, 'error should be null');
-      t.equal(diff, read(fixture.diff), 'diff should match expectation');
-      t.end();
-    }
+    t.equal(diff, read(fixture.diff), 'diff should match expectation');
+    t.end();
   });
 }
