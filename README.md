@@ -14,7 +14,7 @@ npm install cave --save
 
 The `cave` exposes a single function that takes the file path to a stylesheet and a string containing valid CSS you want to remove from the provided stylesheet.
 
-### `cave(stylesheet, options, done)`
+### `cave(stylesheet, options)`
 
 The `options` object contains the following properties.
 
@@ -22,7 +22,7 @@ Property | Description
 ---------|-----------------------------------------------------------------------
 `css`    | The CSS rules to remove from the stylesheet. e.g: `a { color: #f00; }`
 
-Cave will produce an AST and remove any matching rules, then the `done` callback will be executed.
+Cave will produce an AST and remove any matching rules, then the resulting CSS diff will be returned.
 
 ## CLI
 
