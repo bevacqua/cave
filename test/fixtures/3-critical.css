@@ -6,3 +6,7 @@
   white-space: nowrap !important;
   word-wrap: normal !important;
 }
+
+.keep {
+  display: none;
+}

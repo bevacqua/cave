@@ -5,3 +5,9 @@
   white-space: nowrap !important;
   word-wrap: normal !important;
 }
+
+.keep,
+.all {
+  display: none;
+  color: #fff;
+}

@@ -1,1 +1,5 @@
-
+.keep,
+.all {
+  display: none;
+  color: #fff;
+}
