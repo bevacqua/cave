@@ -22,9 +22,9 @@ function api (stylesheet, options) {
     }
     if (inspected.type === 'rule') {
       if (parent) {
-        _(sheetRules)
-          .where({ type: 'media', media: parent.media })
-          .pluck('rules')
+        _.chain(sheetRules)
+          .filter({ type: 'media', media: parent.media })
+          .map('rules')
           .value()
           .forEach(removeMatches);
       } else {
@@ -41,18 +41,32 @@ function api (stylesheet, options) {
     function removeMatches (rules) {
       _.remove(rules, perfectMatch).length; // remove perfect matches
       _.filter(rules, byDeclarations).forEach(stripSelector); // strip selector from partial matches
+      _.filter(rules, bySelector).forEach(stripDeclarations); // Strip declarations from partial matches
+      _.remove(rules, noDeclarations);
     }
 
     function perfectMatch (rule) {
       return _.isEqual(omitRulePosition(rule), simpler);
     }
 
+    function noDeclarations (rule) {
+        return rule.type === 'rule' && _.filter(rule.declarations, {type: 'declaration'}).length === 0;
+    }
+
     function byDeclarations (rule) {
       return _.isEqual(omitRulePosition(rule).declarations, simpler.declarations);
     }
 
+    function bySelector (rule) {
+      return _.isEqual(omitRulePosition(rule).selectors, simpler.selectors);
+    }
+
     function stripSelector (rule) {
       rule.selectors = _.difference(rule.selectors, inspected.selectors);
+    }
+
+    function stripDeclarations (rule) {
+      rule.declarations = _.differenceWith(omitRulePosition(rule).declarations, simpler.declarations, _.isEqual);
     }
   }
 
