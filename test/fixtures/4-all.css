@@ -1,0 +1,16 @@
+.u-textTruncate {
+  max-width: 100%;
+  /* test */
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .a-class,
+  .that-class {
+    /* test */
+    text-align: left;
+  }
+}
