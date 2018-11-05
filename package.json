@@ -1,7 +1,7 @@
 {
   "name": "cave",
   "description": "Remove critical CSS from your stylesheet after inlining it in your pages",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/bevacqua/cave",
   "author": {
     "name": "Nicolas Bevacqua",
