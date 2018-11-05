@@ -23,8 +23,8 @@ function api (stylesheet, options) {
     if (inspected.type === 'rule') {
       if (parent) {
         _(sheetRules)
-          .where({ type: 'media', media: parent.media })
-          .pluck('rules')
+          .filter({ type: 'media', media: parent.media })
+          .map('rules')
           .value()
           .forEach(removeMatches);
       } else {

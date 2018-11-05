@@ -11,7 +11,7 @@ var ok;
 if (argv.css) {
   go(read(argv.css));
 } else {
-  stdin(go);
+  stdin.then(go);
   setTimeout(die, 100);
 }
 
