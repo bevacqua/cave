@@ -51,5 +51,3 @@ npm test
 MIT
 
 [1]: https://github.com/pocketjoso/penthouse
-[2]: https://github.com/bevacqua/cave
-[3]: CHANGELOG.md
