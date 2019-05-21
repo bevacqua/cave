@@ -8,6 +8,7 @@ function api (stylesheet, options) {
   var sheet = css.parse(read(stylesheet));
   var sheetRules = sheet.stylesheet.rules;
   var removables = css.parse(options.css);
+  var compressCss = options.compress;
 
   removables.stylesheet.rules.forEach(inspectRule);
   _.forEachRight(sheetRules, removeEmptyMedia);
@@ -23,8 +24,8 @@ function api (stylesheet, options) {
     if (inspected.type === 'rule') {
       if (parent) {
         _(sheetRules)
-          .where({ type: 'media', media: parent.media })
-          .pluck('rules')
+          .filter({ type: 'media', media: parent.media })
+          .map('rules')
           .value()
           .forEach(removeMatches);
       } else {
@@ -63,7 +64,7 @@ function api (stylesheet, options) {
   }
 
   function result () {
-    return css.stringify(sheet) + '\n';
+    return css.stringify(sheet, {compress: (compressCss == null || compressCss == undefined) ? true : compressCss ? true : false}) + '\n';
   }
 }
 
