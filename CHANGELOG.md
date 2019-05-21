@@ -1,3 +1,8 @@
+# 2.1.0 Updates
+- Update `npm` modules
+- Update `cave.js` to use latest dependencies
+- Add option to API to compress output
+
 # 2.0.0 Synchronous T-Rex
 
 - Change public API to a synchronous one
