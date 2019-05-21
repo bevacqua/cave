@@ -1,6 +1,3 @@
-# Forked from original by [bevacqua/cav][2]
-Updated and maintained by Ed Bennett for personal usage. See [changelog][3] for my modifications.
-
 # cave
 
 > Remove critical CSS from your stylesheet after inlining it in your pages
